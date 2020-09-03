@@ -1,11 +1,12 @@
 FROM geographica/gdal2:latest
 
+ENV DEBIAN_FRONTEND noninteractive
 
 # Install required software
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y \
-    && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    && apt-get dist-upgrade -y \
+    && apt-get upgrade -y \
+    && apt-get install -y \
     build-essential \
     software-properties-common \
     wget \
@@ -19,12 +20,10 @@ RUN apt-get update \
     libgdal-dev \
     python-gdal \
     make \
-    python-pip \
+    python3-pip \
     ssh \
     supervisor \
     && apt-get autoremove -y \
     && apt-get clean
 
-# Install pip
-RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python3 get-pip.py
+update-alternatives --install /usr/bin/python python /usr/bin/python3 10
